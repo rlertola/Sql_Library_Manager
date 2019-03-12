@@ -18,13 +18,10 @@ router.get('/new', (req, res, next) => {
 
 // Posts new book to database.
 router.post('/', (req, res, next) => {
-  console.log('body: ' + req.body);
   Book.create(req.body).then(book => {
-    // console.log(req.body);
     res.redirect('/books/' + book.id);
-  })
+  }).catch(err => console.log(err));
 })
-
 
 // Shows book detail form.
 router.get('/:id', (req, res, next) => {
