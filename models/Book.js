@@ -12,7 +12,7 @@ const Book = db.define('book', {
   },
   author: {
     type: Sequelize.STRING,
-    validation: {
+    validate: {
       notEmpty: {
         msg: "Author is required"
       }
