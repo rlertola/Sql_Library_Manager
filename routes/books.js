@@ -20,15 +20,13 @@ router.get('/new', (req, res, next) => {
 // POST new book to database.
 router.post('/', (req, res, next) => {
   Book.create(req.body).then(book => {
-    res.redirect('/books/' + book.id);
+     res.redirect('/books/' + book.id);
   }).catch(err => {
     if (err.name === "SequelizeValidationError") {
-      console.log(err.name);
       let book = Book.build(req.body);
-      // book.id = id;
-      res.render('book-detail', {
+      res.render('new-book', {
         book: book,
-        title: "Edit Book",
+        title: "Edit Book (new book)",
         errors: err.errors
       })
     } else {
@@ -59,7 +57,7 @@ router.post('/:id', (req, res, next) => {
       res.send(404);
     }
   }).then(book => {
-    res.redirect("/books/" + book.id);
+     res.redirect("/books/" + book.id);
   }).catch(err => {
     if (err.name === "SequelizeValidationError") {
       let book = Book.build(req.body);
@@ -75,11 +73,34 @@ router.post('/:id', (req, res, next) => {
   }).catch(err => res.send(500));
 })
 
+// GET delete-confirmation form.
+router.get('/:id/delete', (req, res, next) => {
+  const id = req.params.id;
+  Book.findById(id).then(book => {
+    if (book) {
+      res.render('delete-confirm', { book: book, title: "Delete Book"});
+    } else {
+      res.send(404);
+    }
+  }).catch(err => send(500))
+})
+
+
 // Deletes a book.
 // post /books/:id/delete
-// *** MAKE SURE TO CREATE A TEST BOOK. DELETES CANNOT BE UNDONE. MAKE AN ALERT WITH CONFIRMATION ***
-
-// .catch(err => res.send(500));
+router.delete('/:id', (req, res, next) => {
+  const id = req.params.id;
+  Book.findById(id).then(book => {
+    if (book) {
+      console.log('yes');
+      return book.destroy();
+    } else {
+      res.send(404);
+    }
+  }).then(() => {
+    res.redirect('/');
+  }).catch(err => res.send(500));
+})
 
 
 module.exports = router;

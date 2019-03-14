@@ -19,8 +19,11 @@ block content
     p
       input(type="submit" value="Update Book")
 
-    form(method="post" action="" onsubmit="")
+    form(method="post" action="/" onsubmit="")
       p
         a(class="button" href="/") Cancel
       p
-        input(type="submit" value="Delete Book")
+        a(class="button" href=`/books/${book.id}/delete`) Delete
+        //- input(type="submit" value="Delete Book")
+      p
+        a(class="button" href='/') Back to Library

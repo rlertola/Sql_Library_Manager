@@ -1,0 +1,11 @@
+extends layout
+
+block content
+  h1= title
+  p Are you sure you want to delete this book:
+  p= book.title
+  p This cannot be undone.
+
+  form(action="/books/" + book.id, method="post")
+    a(href="/books/" + book.id) No, take me back
+    input(type="submit", value = "Yes, I am")
