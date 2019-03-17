@@ -3,6 +3,12 @@ body {
   font: 18px "Garamond", serif;
 }
 
+div {
+  display: grid;
+  width: 60%;
+  margin: auto;
+}
+
 a {
   color: #019875;
   text-decoration: none;
@@ -93,6 +99,10 @@ input {
 input[type="text"] {
   margin-left: 7px;
   width: 300px;
+}
+
+.pageLinks {
+  /* text-align: center; */
 }
 
 .error {

@@ -1,7 +1,7 @@
-const Sequelize = require('sequelize');
-const db = require('../config/database');
+const Sequelize = require("sequelize");
+const db = require("../config/database");
 
-const Book = db.define('book', {
+const Book = db.define("book", {
   title: {
     type: Sequelize.STRING,
     validate: {
@@ -23,4 +23,3 @@ const Book = db.define('book', {
 });
 
 module.exports = Book;
-

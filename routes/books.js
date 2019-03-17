@@ -1,27 +1,45 @@
 const express = require("express");
 const router = express.Router();
-const db = require("../config/database");
 const Book = require("../models/Book");
 const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
 
-// app.use(bodyParser.json());
-// ***MAKE SURE THIS IS NEAR THE TOP OR IT WON'T WORK.
-// app.use(bodyParser.urlencoded({ extended: false }));
+/*
+GET list of books, limit 10 per page.
+Home route redirects to /books.
+Alpha order by author, then title.
+*/
+router.get("/page" + "/:pageNumber", (req, res, next) => {
+  let pageNumber = req.params.pageNumber;
+  let limit = 10;
+  let offset = limit * (pageNumber - 1);
+  let length;
 
-/* GET full list of books.
-Home route redirects to /books. */
-router.get("/", (req, res, next) => {
-  Book.findAll()
+  Book.findAndCountAll().then(books => {
+    length = books.count;
+  });
+  Book.findAll({
+    order: [["author", "ASC"], ["title", "ASC"]],
+    offset,
+    limit
+  })
     .then(books => {
-      res.render("index", { books: books, title: "My Awesome Book Library" });
+      console.log(length);
+      const numberOfPages = Math.ceil(length / 10);
+      console.log(numberOfPages);
+      res.render("index", {
+        books,
+        title: "My Awesome Book Library",
+        numberOfPages,
+        page: "Page",
+        libraryTitle: "Books"
+      });
     })
     .catch(err => res.send(500));
 });
 
 // Search for books.
 router.post("/search", (req, res) => {
-  // let { searchTerm } = req.query;
   let searchTerm = req.body.searchTerm;
 
   Book.findAll({
@@ -40,9 +58,12 @@ router.post("/search", (req, res) => {
           [Op.like]: `%${searchTerm}%`
         }
       }
-    }
+    },
+    order: [["title", "ASC"]]
   })
-    .then(books => res.render("index", { books: books }))
+    .then(books =>
+      res.render("index", { books: books, libraryTitle: "<-- Books" })
+    )
     .catch(err => res.send(500));
 });
 
@@ -54,14 +75,14 @@ router.get("/new", (req, res, next) => {
 // POST new book to database.
 router.post("/", (req, res, next) => {
   Book.create(req.body)
-    .then(book => {
+    .then(() => {
       res.redirect("/");
     })
     .catch(err => {
       if (err.name === "SequelizeValidationError") {
         let book = Book.build(req.body);
         res.render("new-book", {
-          book: book,
+          book,
           title: "Edit Book (new book)",
           errors: err.errors
         });
@@ -78,7 +99,7 @@ router.get("/:id", (req, res, next) => {
   Book.findById(id)
     .then(book => {
       if (book) {
-        res.render("book-detail", { book: book });
+        res.render("book-detail", { book });
       } else {
         let err = new Error("Book Not found");
         err.status = 500;
@@ -107,7 +128,7 @@ router.post("/:id", (req, res, next) => {
         let book = Book.build(req.body);
         book.id = id;
         res.render("book-detail", {
-          book: book,
+          book,
           title: "Edit Book",
           errors: err.errors
         });
@@ -124,7 +145,7 @@ router.get("/:id/delete", (req, res, next) => {
   Book.findById(id)
     .then(book => {
       if (book) {
-        res.render("delete-confirm", { book: book, title: "Delete Book" });
+        res.render("delete-confirm", { book, title: "Delete Book" });
       } else {
         res.send(404);
       }
@@ -134,12 +155,10 @@ router.get("/:id/delete", (req, res, next) => {
 
 // POST deletes a book.
 router.delete("/:id", (req, res, next) => {
-  console.log("yes");
   const id = req.params.id;
   Book.findById(id)
     .then(book => {
       if (book) {
-        console.log("yes");
         return book.destroy();
       } else {
         res.send(404);
