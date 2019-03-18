@@ -15,8 +15,8 @@ router.get("/page" + "/:pageNumber", (req, res, next) => {
   let offset = limit * (pageNumber - 1);
   let length;
 
-  Book.findAndCountAll().then(books => {
-    length = books.count;
+  Book.findAll().then(books => {
+    length = books.length;
   });
   Book.findAll({
     order: [["author", "ASC"], ["title", "ASC"]],
@@ -24,13 +24,12 @@ router.get("/page" + "/:pageNumber", (req, res, next) => {
     limit
   })
     .then(books => {
-      console.log(length);
       const numberOfPages = Math.ceil(length / 10);
-      console.log(numberOfPages);
       res.render("index", {
         books,
         title: "My Awesome Book Library",
         numberOfPages,
+        pageNumber,
         page: "Page",
         libraryTitle: "Books"
       });
@@ -38,7 +37,7 @@ router.get("/page" + "/:pageNumber", (req, res, next) => {
     .catch(err => res.send(500));
 });
 
-// Search for books.
+// POST search for books.
 router.post("/search", (req, res) => {
   let searchTerm = req.body.searchTerm;
 
@@ -62,7 +61,7 @@ router.post("/search", (req, res) => {
     order: [["title", "ASC"]]
   })
     .then(books =>
-      res.render("index", { books: books, libraryTitle: "<-- Books" })
+      res.render("index", { books: books, libraryTitle: `← Books` })
     )
     .catch(err => res.send(500));
 });

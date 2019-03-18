@@ -1,3 +1,9 @@
-h1 Sorry, that page does not exist.
-p= message
-p= error
+extends layout
+
+block content
+  div(class="pageNotFound")
+    h1= error
+    p Sorry, that url does not exist.
+    p
+      a(href="/") ← Books
+

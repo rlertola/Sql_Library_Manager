@@ -1,12 +1,8 @@
 body {
   padding: 10px 50px 50px;
-  font: 18px "Garamond", serif;
-}
+  /* font: 18px "Garamond", serif; */
 
-div {
-  display: grid;
-  width: 60%;
-  margin: auto;
+  font-family: "Montserrat", sans-serif;
 }
 
 a {
@@ -17,7 +13,7 @@ a {
 }
 
 a:hover {
-  color: black;
+  color: #01b189;
 }
 
 a.button,
@@ -25,7 +21,7 @@ input[type="submit"] {
   color: white;
   background: #019875;
   font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
-  padding: 10px 14px 12px;
+  padding: 10px 14px;
   font-size: 14px;
   border-radius: 2px;
   cursor: pointer;
@@ -33,7 +29,7 @@ input[type="submit"] {
 
 form a.button,
 input[type="submit"] {
-  margin-left: 140px;
+  margin-left: 5px;
   transition: 0.4s;
 }
 
@@ -63,7 +59,8 @@ h2 {
 }
 
 th {
-  border-bottom: 2px solid #d8b493;
+  /* border-bottom: 2px solid #d8b493; */
+  border-bottom: 2px solid hsla(51, 91%, 66%, 0.966);
   text-align: left;
   padding: 5px 20px 5px 10px;
 }
@@ -78,6 +75,7 @@ tr:nth-child(2n) {
 
 td {
   padding: 5px 20px 5px 10px;
+  font-family: "Montserrat", sans-serif;
 }
 
 label {
@@ -101,10 +99,70 @@ input[type="text"] {
   width: 300px;
 }
 
-.pageLinks {
-  /* text-align: center; */
+input[type="search"] {
+  margin-left: 7px;
+  width: 335px;
 }
 
 .error {
   color: rgb(236, 15, 15);
+}
+
+/* Stuff I added. */
+
+div {
+  /* width: 90%; */
+  padding: 0 10px;
+  margin: auto;
+}
+
+.libraryTitle {
+  color: #02755a;
+  font-size: 2em;
+  font-family: "Montserrat", sans-serif;
+}
+
+.header {
+  border-radius: 2px;
+  padding-top: 1px;
+}
+
+table {
+  width: 100%;
+}
+
+.pageLinks {
+  padding-top: 10px;
+  font-family: "Montserrat", sans-serif;
+  font-family: "Oswald", sans-serif;
+  text-align: center;
+  font-size: 1.5em;
+}
+
+.pageNum {
+  color: gray;
+  padding: 15px;
+  text-align: center;
+}
+
+.active {
+  color: #019875;
+  font-size: 1.3em;
+  padding-bottom: 2px;
+  border-bottom: 3px solid;
+}
+
+.bookList {
+  min-height: 525px;
+}
+
+.pageNotFound {
+  padding: 50px;
+}
+
+span {
+  color: #019875;
+  font-style: italic;
+  font-size: 1.5em;
+  font-weight: bold;
 }

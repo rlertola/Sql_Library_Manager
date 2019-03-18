@@ -1,31 +1,39 @@
 extends layout
 
 block content
-  div
-    p
-      a(class="libraryTitle" href="/")= libraryTitle
-    p
-      include search
-    p
-      a(href="/books/new") Create New Book
-    table
-      thead
-        tr
-          th Title
-          th Author
-          th Genre
-          th Year
-      tbody
-        each book in books
+  div(class="bookList")
+    div(class="header")
+      p
+        a(class="libraryTitle" href="/")= libraryTitle
+      p
+        include search
+      p
+        a(href="/books/new") Create New Book
+    div
+      table
+        thead
           tr
-            td
-              a(href='/books/' + book.id)= book.title
-            td= book.author
-            td= book.genre
-            td= book.year
-    //- Append page links.
+            th Title
+            th Author
+            th Genre
+            th Year
+        tbody
+          each book in books
+            tr
+              td
+                a(href='/books/' + book.id)= book.title
+              td= book.author
+              td= book.genre
+              td= book.year
+      //- Append page links.
+      //- Active pageNumber is hightlighted in green and gets bigger.
+  div
     ul(class='pageLinks')
       - let n = 1
       while n <= numberOfPages
-        a(href="/books/page/" + n)= n++ + ' '
+        if pageNumber == n
+          a.pageNum(class="active" href="/books/page/" + n)= n++
+        else
+          a.pageNum(href="/books/page/" + n)= n++
+
 
