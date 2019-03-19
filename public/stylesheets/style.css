@@ -1,7 +1,9 @@
+/* Some changes I made are in the existing CSS,
+but most is at the bottom where noted. */
+
 body {
   padding: 10px 50px 50px;
   /* font: 18px "Garamond", serif; */
-
   font-family: "Montserrat", sans-serif;
 }
 
@@ -117,7 +119,7 @@ div {
 }
 
 .libraryTitle {
-  color: #02755a;
+  color: #019875;
   font-size: 2em;
   font-family: "Montserrat", sans-serif;
 }

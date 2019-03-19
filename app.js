@@ -5,9 +5,11 @@ const bodyParser = require("body-parser");
 // ***MAKE SURE THIS IS NEAR THE TOP OR IT WON'T WORK.
 app.use(bodyParser.urlencoded({ extended: false }));
 
-var methodOverride = require("method-override");
+// Allows use of .delete method. This is a dependency.
+const methodOverride = require("method-override");
 app.use(methodOverride("_method"));
 
+// Router setup.
 const booksRouter = require("./routes/books");
 app.use("/books", booksRouter);
 
@@ -25,7 +27,8 @@ app.get("/", (req, res, next) => {
   res.redirect("/books/page/" + 1);
 });
 
-// Error handling.
+/* Error handling.
+404 for a bad url, and 500 for a nonexistent book id. */
 app.use((req, res, next) => {
   let err = new Error("Page Not found");
   err.status = 404;

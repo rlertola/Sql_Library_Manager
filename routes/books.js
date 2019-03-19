@@ -6,8 +6,8 @@ const Op = Sequelize.Op;
 
 /*
 GET list of books, limit 10 per page.
-Home route redirects to /books.
-Alpha order by author, then title.
+Home route redirects to /books/page/1 (this is for exceeds expectations grade).
+Books are in alpha order by author, then title.
 */
 router.get("/page" + "/:pageNumber", (req, res, next) => {
   let pageNumber = req.params.pageNumber;
@@ -15,6 +15,7 @@ router.get("/page" + "/:pageNumber", (req, res, next) => {
   let offset = limit * (pageNumber - 1);
   let length;
 
+  // For adding the page links.
   Book.findAll().then(books => {
     length = books.length;
   });
@@ -37,7 +38,7 @@ router.get("/page" + "/:pageNumber", (req, res, next) => {
     .catch(err => res.send(500));
 });
 
-// POST search for books.
+// POST search for books. Searches all columns.
 router.post("/search", (req, res) => {
   let searchTerm = req.body.searchTerm;
 
@@ -71,7 +72,7 @@ router.get("/new", (req, res, next) => {
   res.render("new-book", { book: Book.build(), title: "New Book" });
 });
 
-// POST new book to database.
+// POST new book to database. Checks for validation on title and author.
 router.post("/", (req, res, next) => {
   Book.create(req.body)
     .then(() => {
@@ -92,7 +93,7 @@ router.post("/", (req, res, next) => {
     .catch(err => res.send(500));
 });
 
-// GET book detail form.
+// GET book detail form. Renders error page if book id not available.
 router.get("/:id", (req, res, next) => {
   const id = req.params.id;
   Book.findById(id)
@@ -108,7 +109,7 @@ router.get("/:id", (req, res, next) => {
     .catch(err => res.send(err.status));
 });
 
-// POST edit book info in database.
+// POST edit book info in database. Also validates title and author.
 router.post("/:id", (req, res, next) => {
   const id = req.params.id;
   Book.findById(id)

@@ -1,3 +1,6 @@
+/* Sets up the Book model.
+Title and author are required. */
+
 const Sequelize = require("sequelize");
 const db = require("../config/database");
 
